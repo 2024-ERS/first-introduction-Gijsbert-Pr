@@ -65,7 +65,9 @@ ggplot2::ggplot(data=FactCockleSize,  # what data table to use
 FactCockleSize |> dplyr::filter(thickness_mm>500)
 
 FactCockleSize <- readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSpormjGiM4uWMTIZYm9Upt5j1Ige_Wu9CrhGGdvjXwxmHP2R6S7JDyEmiGTn3fXihl5s5yBn_sdo8h/pub?gid=1538766002&single=true&output=csv") |> 
-    dplyr::filter(CockleObs_ID!=1531, CockleObs_ID!=469)
+    dplyr::filter(CockleObs_ID!=1531, CockleObs_ID!=469) |>
+    dplyr::mutate(year=factor(year))  # make year a factor
+print(FactCockleSize)
 # plot the data
 ggplot2::ggplot(data=FactCockleSize,  # what data table to use
                 mapping=aes(x=length_mm,y=thickness_mm)) +  # what is on the axes
@@ -79,17 +81,41 @@ FactCockleSize |> dplyr::filter(thickness_mm>10 & length_mm<5)
 Further explore the plot with a regression line through all the data
 
 ```{r}
+# plot the data with a regression line
+ggplot2::ggplot(data=FactCockleSize,  # what data table to use
+                mapping=aes(x=length_mm,y=thickness_mm)) +  # what is on the axes
+  geom_point() +
+  geom_smooth(method="lm")
+
+# calculate a linear regression
+model_lm<-lm(thickness_mm~length_mm, data=FactCockleSize)
+summary(model_lm)
+#equation: thickness_mm=-0.353+0.669*length_mm
+# a cockle of length 20 mm has an predicted width of: 
+-0.353+0.669*20
+# this regression is significant, R2=0.90, P<0.001 (***)
 ```
 
 Make same plot but showing a separate regression line per year
 
 ```{r}
 # color the points by year, but plot one regression line
+ggplot2::ggplot(data=FactCockleSize,  # what data table to use
+                mapping=aes(x=length_mm,y=thickness_mm)) +  # what is on the axes
+  geom_point(mapping=aes(col=year)) +
+  geom_smooth(method="lm")
 ```
 
 Make a panel plot where with each year is shown as a separate graph
 
 ```{r}
+drop_na(FactCockleSize) |>
+ggplot2::ggplot(mapping=aes(x=length_mm,y=thickness_mm)) +
+  geom_point(aes(col=year), size=2) +
+  xlab("cockle length(mm)") +
+  ylab("cockle width (mm)") +
+  geom_smooth(method='lm') +
+  facet_wrap(~year)
 ```
 
 We conclude from this that: \* there were two important outliers in the
