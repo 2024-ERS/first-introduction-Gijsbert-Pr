@@ -44,7 +44,7 @@ If you want to read a file from a drive from your computer, it is a good idea to
 # print(data2)
 ```
 
-The problem however, is that this script likely does not work on your computer when you would remove # in front of each line. This is because you do not have this file and folder on your local computer. I can of course send you the data, but then if I change the I should send them again. This leads to different versions of the same file to exist in multiple places, which is not good data management. You will not be shure what the most up-to-dat version of the file is. So in collaborative projects it is much better to read data from an online data source, making sure that there is only one file that all the collaborators read to get the data.\
+The problem however, is that this script likely does not work on your computer when you would remove \# in front of each line. This is because you do not have this file and folder on your local computer. I can of course send you the data, but then if I change the I should send them again. This leads to different versions of the same file to exist in multiple places, which is not good data management. You will not be shure what the most up-to-dat version of the file is. So in collaborative projects it is much better to read data from an online data source, making sure that there is only one file that all the collaborators read to get the data.\
 
 ### 3. Read data directly from an online database
 
