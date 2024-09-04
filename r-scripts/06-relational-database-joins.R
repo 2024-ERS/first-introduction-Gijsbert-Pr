@@ -51,11 +51,18 @@ print(cdat2017)
 
 
 ##### merge the cockle and elevation data into a single table you call "combidat"
-# using Distance_ID as the common variable between the two tables
+# using TransectPoint_ID as the common variable between the two tables
+# always put the longest file first!
+combidat<-dplyr::left_join(elevdat2017,cdat2017,by="TransectPoint_ID") |>
+  dplyr::mutate(n_obs=tidyr::replace_na(n_obs,0))
+combidat
 
 # show in a plot how cockle density changes with elevation
-
+combidat |>
+  ggplot(aes(x=elevation_m,y=n_obs)) +
+  geom_point() +
 # fit a linear regression
+  geom_smooth(method="loess")
 
 # predicted at 0.5 m (x)
 # y = b0 + b1x   (b0 is intercept and b1 is the slope, x is elevation, y is no cockles
