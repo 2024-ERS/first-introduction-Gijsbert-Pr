@@ -6,6 +6,8 @@ format: html
 editor: 
   markdown: 
     wrap: 72
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Working with the dplyr and ggplot2 packages
@@ -13,6 +15,9 @@ editor:
 Load the required libraries :
 
 ```{r message = FALSE, warning = FALSE}
+# restore your library (keep at the start of every script)
+renv::restore()
+
 # clear the R environment
 rm(list = ls())
 

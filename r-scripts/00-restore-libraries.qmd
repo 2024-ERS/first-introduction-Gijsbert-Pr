@@ -3,6 +3,8 @@ title: "Using the renv library for making R predictable"
 author: "Han Olff"
 format: html
 date: "2024-09-02"
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Using renv for making R predictable
