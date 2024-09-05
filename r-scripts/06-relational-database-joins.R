@@ -66,15 +66,37 @@ combidat |>
 
 # predicted at 0.5 m (x)
 # y = b0 + b1x   (b0 is intercept and b1 is the slope, x is elevation, y is no cockles
+29.922 + -18.116 * 0.5
+linreg$coefficients[1] + linreg$coefficients[2]*0.5
 
 # show this model as a line in ggplot, with the confidence interval
+combidat %>% ggplot2::ggplot(aes(x=elevation_m, y=n_obs)) +
+  geom_point(size=4) +
+  ylab("number of cockles per site") +
+  xlab("elevation in m + NAP") +
+  geom_smooth(method="lm",formula='y~x')
 
 # fit a better model, using a loess smoother
 # show this model in ggplot
+combidat %>%
+  ggplot2::ggplot(aes(x=elevation_m, y=n_obs)) +
+  geom_point(size=4) +
+  ylab("number of cockles per site") +
+  xlab("elevation in m + NAP") +
+  geom_smooth(method="loess")
+
 
 ##### plot  how the size (as mean length) of cockles changes with  elevation along the transect
 # omit the observations where length is NA (because no cockles were measures)
 # fit a quadratic model (second-order polynomial)
 # show for each point also the standard errors
 # add appropriate labels for the x and y axis 
-
+combidat %>% filter(!is.na(avg_l)) |>
+  ggplot2::ggplot(aes(x=elevation_m, y=avg_l)) +
+  geom_point(size=4) +
+  geom_smooth(method="lm",formula='y~x',fill=NA, col="red") +
+  geom_smooth(method="lm",formula='y~x+I(x^2)',fill=NA, col="blue") +
+  geom_errorbar(aes(ymin=avg_l-se_l,ymax=avg_l+se_l),width=0.03) +
+  xlim(0,0.8) +
+  xlab("elevation in m + NAP") +
+  ylab("mean cockle length (mm)") 
