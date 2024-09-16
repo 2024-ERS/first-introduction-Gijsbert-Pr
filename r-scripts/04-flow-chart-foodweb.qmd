@@ -1,5 +1,5 @@
 ---
-title: "Savannna food web diagram with Mermaid"
+title: "Savannna food web diagram with Mermid"
 format:   
   html:
     mermaid: {}
