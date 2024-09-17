@@ -192,7 +192,13 @@ m7<- glm(CountSum~elevation_m+I(elevation_m^2)+factor(year), family = poisson(lo
 
 orchdat3$pred7<-predict(m7, type="response")
 p1  + geom_line(data=orchdat3,aes(y=pred7),linewidth=1.2)
-anova(m7,m6, test="Chisq") #Deviance is 
+anova(m7,m6, test="Chisq") #Deviance assesses the fit of the model
+
+m8<- glm(CountSum~elevation_m+I(elevation_m^2)+factor(year)+ elevation_m*factor(year), family = poisson(log), data=orchdat3) 
+
+orchdat3$pred8<-predict(m8, type="response")
+p1  + geom_line(data=orchdat3,aes(y=pred8),linewidth=1.2)
+anova(m8,m7, test="Chisq") #Deviance assesses the fit of the model
 
 #add the  model to the plot
 # calculate the predicted value of m2 for every observation, add to the dataset as a variable as pred2
