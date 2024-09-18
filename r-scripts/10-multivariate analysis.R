@@ -107,10 +107,25 @@ stats::biplot(pca_env,xlab="PC1 (49%)", ylab="PC2 (21%)")
 
 ##### ordination: calculate and plot a Non-metric Multidimensional Scaling (NMDS) ordination
 # explore the distance (dissimilarity) in species composition between plots
+d1<-vegan::vegdist(vegdat, method="euclidean") # calculate Euclidean dissimilarity matrix
+d1 # show the dissimilarity matrix (100= completely different, 0= exactly the same)
+d2<-vegan::vegdist(vegdat, method="bray") # calculate Bray-Curtis dissimilarity matrix)
+d2
 
 ##### improve the NMDS ordination plot by only showing the dominant species
 # non-metric multidimension scaling / indirect gradient analysis (only species composition)
-
+nmds_veg<-metaMDS(vegdat,k=2, trace=F, trymax=1000, distance="bray") # trymax=1000 is the maximum number of iterations
+nmds_veg
+vegan::ordiplot(nmds_veg, type="t")
+# show the ordination with the most abundance species with priority
+SpecTotCov<-colSums(vegdat) # calculate the total cover of each species
+SpecTotCov
+vegan::ordiplot(nmds_veg, display="sites", cex=1, type="t") # plot the sites
+vegan::orditorp(nmds_veg, display="species", priority= SpecTotCov, col="red", pcol="red", pch="+", cex=1.1) # add the species with the highest cover to the plot
+#Priority starts with the most abundant ones and deletes overlapping ones
+                
+#Plots close to each other are more similar in species composition
+#Species that are close to each other occus in the same plots
 
 # and show the ordination with the most abundance species with priority
 
