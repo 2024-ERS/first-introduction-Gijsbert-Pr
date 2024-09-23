@@ -56,15 +56,27 @@ head(data)
 
 
 # show in a scatter plot
-
-
+data|>
+ggplot(aes(x=Treatment, y=Value, color=Block)) +
+  geom_jitter(width =0.15) + # add some jitter to the points to avoid overplotting 
+  geom_smooth(method = "lm", fill=NA) # add a linear regression line
 
 # find the best model describing the effects of treatment and block
 # block is a random effect, treatment is a fixed effect
-
-
+m1<- lm(Value ~ Treatment + Block + Treatment:Block, data = data  )
+anova(m1)
+#This is actually not correct Just treat block as if it is fixed, but it is random
+#So make
 
 #using lme4, show a mixed model with fixed slopes (=effect of the treatment within each block) and random intercepts
+#Block is a random effect, treatment is a fixed effect
+model1<- lmerTest::lmer(Value ~ Treatment + (1|Block), data = data)
+summary(model1)
+data$Value
+coef(model1) #slope of treatment is the same for every block
+ggplot(data, aes(x=Treatment, y=Value, color=Block)) +
+  geom_jitter(width =0.15) + # add some jitter to the points to avoid overplotting 
+  geom_line(aes(y = predict(model1)), size =1) # add the predicted values from the model
 
 
 #using lme4, show a mixed model with random slopes and random intercepts
@@ -73,4 +85,13 @@ head(data)
 # note that the effect of treatment is now also shown as a random effect 
 
 # plot this model with the data as points using ggplot and predicted values
+model2<- lmerTest::lmer(Value ~ Treatment + (Treatment|Block), data = data)
+summary(model2)
+coef(model2) #slope of treatment is the same for every block
+ggplot(data, aes(x=Treatment, y=Value, color=Block)) +
+  geom_jitter(width =0.15) + # add some jitter to the points to avoid overplotting 
+  geom_line(aes(y = predict(model2)), size =1) # add the predicted values from the model
 
+#Compare the models using Akaike's Information Criterion (AIC)
+#if at least value 2 lower, then often significantly better. So a lower AIC is better
+anova(model1, model2)
